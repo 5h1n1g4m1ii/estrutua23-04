@@ -242,6 +242,94 @@ int main() {
 
 4----------------------------
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100 
+
+typedef struct {
+    int dados[MAX];
+    int inicio, fim;
+} Fila;
+
+void inicializar(Fila *f) {
+    f->inicio = 0;
+    f->fim = -1;
+}
+
+int vazia(Fila *f) {
+    return (f->fim < f->inicio);
+}
+
+int cheia(Fila *f) {
+    return (f->fim == MAX - 1);
+}
+
+void inserir(Fila *f, int valor) {
+    if (cheia(f)) {
+        printf("Fila cheia.\n");
+        exit(1);
+    }
+    f->fim++;
+    f->dados[f->fim] = valor;
+}
+
+int remover(Fila *f) {
+    if (vazia(f)) {
+        printf("Fila vazia.\n");
+        exit(1);
+    }
+    int valor = f->dados[f->inicio];
+    f->inicio++;
+    return valor;
+}
+
+void inverterFila(Fila *f1, Fila *f2) {
+    // Inicializa a nova fila F2
+    inicializar(f2);
+
+    // Remove todos os elementos de F1 e insere em F2
+    while (!vazia(f1)) {
+        int valor = remover(f1);
+        inserir(f2, valor);
+    }
+
+    // Remove todos os elementos de F2 e insere de volta em F1
+    while (!vazia(f2)) {
+        int valor = remover(f2);
+        inserir(f1, valor);
+    }
+}
+
+int main() {
+    Fila f1, f2;
+    int i;
+
+    // Inicializa a fila F1 com 100 números aleatórios
+    inicializar(&f1);
+    for (i = 0; i < MAX; i++) {
+        inserir(&f1, rand() % 100);
+    }
+
+    // Imprime a fila F1 original
+    printf("Fila original:\n");
+    while (!vazia(&f1)) {
+        printf("%d ", remover(&f1));
+    }
+    printf("\n");
+
+    // Inverte a fila F1 e cria a nova fila F2
+    inverterFila(&f1, &f2);
+
+    // Imprime a fila F1 invertida
+    printf("Fila invertida:\n");
+    while (!vazia(&f1)) {
+        printf("%d ", remover(&f1));
+    }
+    printf("\n");
+
+    return 0;
+}
 
 
 5----------------------------
