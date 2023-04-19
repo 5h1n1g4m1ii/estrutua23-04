@@ -470,6 +470,48 @@ int main() {
 
 6----------------------------
 
+#include <iostream>
+#include <stack>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+    // Define as constantes do problema
+    const int N = 2000; // Número total de elementos
+    const int NP = 1000; // Número de elementos positivos
+    const int NN = 1000; // Número de elementos negativos
+    
+    // Inicializa a fila de números aleatórios
+    int fila[N];
+    srand(time(NULL));
+    for (int i = 0; i < NP; i++) {
+        fila[i] = rand() % (1000) + 1; // Gera número positivo aleatório entre 1 e 1000
+    }
+    for (int i = NP; i < N; i++) {
+        fila[i] = -rand() % (1000) - 1; // Gera número negativo aleatório entre -1 e -1000
+    }
+    
+    // Inicializa a pilha
+    stack<int> pilha;
+    
+    // Processa a fila de números
+    for (int i = 0; i < N; i++) {
+        if (fila[i] > 0) {
+            // Se o número for positivo, coloca na pilha
+            pilha.push(fila[i]);
+        } else {
+            // Se o número for negativo, imprime e retira o topo da pilha
+            if (!pilha.empty()) {
+                cout << pilha.top() << endl;
+                pilha.pop();
+            }
+        }
+    }
+    
+    return 0;
+}
 
 
 7----------------------------
