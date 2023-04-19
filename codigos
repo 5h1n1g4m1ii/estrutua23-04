@@ -516,6 +516,111 @@ int main() {
 
 7----------------------------
 
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 20
+
+typedef struct pilha {
+    int topo;
+    int itens[MAX];
+} Pilha;
+
+typedef struct fila {
+    int inicio;
+    int fim;
+    int itens[MAX];
+} Fila;
+
+// Função que inicializa a pilha
+void inicializa_pilha(Pilha *p) {
+    p->topo = -1;
+}
+
+// Função que verifica se a pilha está vazia
+int pilha_vazia(Pilha *p) {
+    return (p->topo == -1);
+}
+
+// Função que insere um elemento na pilha
+void push(Pilha *p, int item) {
+    p->itens[++p->topo] = item;
+}
+
+// Função que remove o elemento do topo da pilha e o retorna
+int pop(Pilha *p) {
+    return p->itens[p->topo--];
+}
+
+// Função que inicializa a fila
+void inicializa_fila(Fila *f) {
+    f->inicio = -1;
+    f->fim = -1;
+}
+
+// Função que verifica se a fila está vazia
+int fila_vazia(Fila *f) {
+    return (f->inicio == -1);
+}
+
+// Função que insere um elemento na fila
+void insere(Fila *f, int item) {
+    if (f->fim == MAX - 1) {
+        printf("Erro: fila cheia!\n");
+        return;
+    }
+    if (f->inicio == -1) {
+        f->inicio = 0;
+    }
+    f->itens[++f->fim] = item;
+}
+
+// Função que remove um elemento da fila e o retorna
+int remove(Fila *f) {
+    if (fila_vazia(f)) {
+        printf("Erro: fila vazia!\n");
+        return -1;
+    }
+    int item = f->itens[f->inicio];
+    if (f->inicio == f->fim) {
+        f->inicio = -1;
+        f->fim = -1;
+    } else {
+        f->inicio++;
+    }
+    return item;
+}
+
+// Função que inverte a ordem dos elementos de uma fila usando uma pilha auxiliar
+void inverte_fila(Fila *f) {
+    Pilha p;
+    inicializa_pilha(&p);
+    while (!fila_vazia(f)) {
+        push(&p, remove(f));
+    }
+    while (!pilha_vazia(&p)) {
+        insere(f, pop(&p));
+    }
+}
+
+int main() {
+    Fila f;
+    inicializa_fila(&f);
+    for (int i = 0; i < MAX; i++) {
+        insere(&f, i+1);
+    }
+    printf("Fila original: ");
+    for (int i = f.inicio; i <= f.fim; i++) {
+        printf("%d ", f.itens[i]);
+    }
+    printf("\n");
+    inverte_fila(&f);
+    printf("Fila invertida: ");
+    for (int i = f.inicio; i <= f.fim; i++) {
+        printf("%d ", f.itens[i]);
+    }
+    printf("\n");
+    return 0;
+}
 
 
 8----------------------------
