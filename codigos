@@ -1,5 +1,79 @@
 1----------------------------
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 1000
+
+struct Pilha {
+    char items[MAX];
+    int topo;
+};
+
+void push(struct Pilha *p, char c) {
+    if (p->topo == MAX - 1) {
+        printf("A pilha esta cheia\n");
+        return;
+    }
+    p->items[++p->topo] = c;
+}
+
+char pop(struct Pilha *p) {
+    if (p->topo == -1) {
+        printf("A pilha esta vazia\n");
+        return '\0';
+    }
+    return p->items[p->topo--];
+}
+
+void imprimirInverso(char *texto) {
+    struct Pilha p;
+    p.topo = -1;
+    for (int i = 0; texto[i] != '\0'; i++) {
+        push(&p, texto[i]);
+    }
+    printf("Texto invertido: ");
+    while (p.topo != -1) {
+        printf("%c", pop(&p));
+    }
+    printf("\n");
+}
+
+int palindromo(char *texto) {
+    struct Pilha p;
+    p.topo = -1;
+    int len = strlen(texto);
+    for (int i = 0; i < len; i++) {
+        char c = tolower(texto[i]);
+        if (c >= 'a' && c <= 'z') {
+            push(&p, c);
+        }
+    }
+    for (int i = 0; i < len; i++) {
+        char c = tolower(texto[i]);
+        if (c >= 'a' && c <= 'z') {
+            if (c != pop(&p)) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int main() {
+    char texto[MAX];
+    printf("Digite um texto: ");
+    fgets(texto, MAX, stdin);
+    imprimirInverso(texto);
+    if (palindromo(texto)) {
+        printf("O texto e um palindromo\n");
+    } else {
+        printf("O texto nao e um palindromo\n");
+    }
+    return 0;
+}
 
 
 2----------------------------
