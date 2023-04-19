@@ -78,6 +78,76 @@ int main() {
 
 2----------------------------
 
+#include <stdio.h>
+#include <stdlib.h>
+
+struct No {
+    int valor;
+    struct No *prox;
+};
+
+struct Pilha {
+    struct No *topo;
+};
+
+void push(struct Pilha *p, int valor) {
+    struct No *novo = (struct No*) malloc(sizeof(struct No));
+    novo->valor = valor;
+    novo->prox = p->topo;
+    p->topo = novo;
+}
+
+int pop(struct Pilha *p) {
+    if (p->topo == NULL) {
+        printf("A pilha esta vazia\n");
+        return -1;
+    }
+    int valor = p->topo->valor;
+    struct No *temp = p->topo;
+    p->topo = p->topo->prox;
+    free(temp);
+    return valor;
+}
+
+void remover(struct Pilha *p, int chave) {
+    struct Pilha temp;
+    temp.topo = NULL;
+    while (p->topo != NULL) {
+        int valor = pop(p);
+        if (valor != chave) {
+            push(&temp, valor);
+        }
+    }
+    while (temp.topo != NULL) {
+        push(p, pop(&temp));
+    }
+}
+
+void imprimir(struct Pilha *p) {
+    struct No *no = p->topo;
+    printf("Pilha: ");
+    while (no != NULL) {
+        printf("%d ", no->valor);
+        no = no->prox;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Pilha p;
+    p.topo = NULL;
+    push(&p, 1);
+    push(&p, 2);
+    push(&p, 3);
+    push(&p, 4);
+    push(&p, 5);
+    int chave;
+    printf("Digite a chave a ser removida: ");
+    scanf("%d", &chave);
+    remover(&p, chave);
+    imprimir(&p);
+    return 0;
+}
 
 
 3----------------------------
