@@ -152,7 +152,93 @@ int main() {
 
 3----------------------------
 
+#include <iostream>
+#include <string>
+#include <queue>
+using namespace std;
 
+struct Aviao {
+    string nome;
+    int numero;
+};
+
+void exibirMenu() {
+    cout << "\nSelecione uma opcao: \n";
+    cout << "1. Listar o numero de avioes aguardando na fila de decolagem\n";
+    cout << "2. Autorizar a decolagem do primeiro aviao da fila\n";
+    cout << "3. Adicionar um aviao a fila de espera\n";
+    cout << "4. Listar todos os avioes na fila de espera\n";
+    cout << "5. Listar as caracteristicas do primeiro aviao da fila\n";
+    cout << "6. Sair\n";
+}
+
+int main() {
+    queue<Aviao> fila;  
+    int opcao;
+
+    do {
+        exibirMenu();
+        cin >> opcao;
+        switch (opcao) {
+    case 1: { 
+        cout << "Numero de avioes aguardando na fila de decolagem: " << fila.size() << endl;
+        break;
+    }
+    case 2: {
+        if (!fila.empty()) {
+            Aviao aviao = fila.front();
+            cout << "Aviao " << aviao.nome << " (numero " << aviao.numero << ") autorizado para decolagem.\n";
+            fila.pop();
+        } else {
+            cout << "Nenhum aviao na fila de espera.\n";
+        }
+        break;
+    }
+    case 3: { 
+        Aviao aviao;
+        cout << "Informe o nome do aviao: ";
+        cin >> aviao.nome;
+        cout << "Informe o numero do aviao: ";
+        cin >> aviao.numero;
+        fila.push(aviao);
+        cout << "Aviao " << aviao.nome << " (numero " << aviao.numero << ") adicionado a fila de espera.\n";
+        break;
+    }
+    case 4: {
+        if (!fila.empty()) {
+            cout << "Avioes na fila de espera:\n";
+            int i = 1;
+            for (queue<Aviao> temp = fila; !temp.empty(); temp.pop()) {
+                Aviao aviao = temp.front();
+                cout << i << ". " << aviao.nome << " (numero " << aviao.numero << ")\n";
+                i++;
+            }
+        } else {
+            cout << "Nenhum aviao na fila de espera.\n";
+        }
+        break;
+    }
+    case 5: {
+        if (!fila.empty()) {
+            Aviao aviao = fila.front();
+            cout << "Caracteristicas do primeiro aviao da fila:\n";
+            cout << "Nome: " << aviao.nome << endl;
+            cout << "Numero: " << aviao.numero << endl;
+        } else {
+            cout << "Nenhum aviao na fila de espera.\n";
+        }
+        break;
+    }
+    case 6: { 
+        cout << "Programa encerrado.\n";
+        break;
+    }
+    default: {
+        cout << "Opcao invalida. Tente novamente.\n";
+        break;
+    }
+}
+}
 
 4----------------------------
 
